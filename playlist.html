@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Playlist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #181818;
+            color: #fff;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+            background-color: #202020;
+            border-bottom: 1px solid #f44242;
+        }
+
+        .logo {
+            font-size: 36px;
+            color: #fff;
+            margin: 0;
+            font-family: 'Londrina Sketch', cursive;
+            text-decoration: none;
+        }
+
+        nav .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav .nav-icons i {
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        nav .nav-icons i:hover {
+            color: #f44242;
+        }
+        .btn{
+            background: transparent;
+            border: none;
+        }
+
+        /* Search Bar */
+        #search-bar {
+            padding: 5px;
+            border: 1px solid #f44242;
+            border-radius: 5px;
+            background-color: #202020;
+            color: #fff;
+            margin-left: 10px;
+        }
+
+        #search-bar::placeholder {
+            color: #aaa;
+        }
+
+        /* Playlist Container */
+        .playlist-container {
+            margin: 20px;
+            padding: 20px;
+            background: transparent;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #fafafa;
+        }
+
+        .playlist-container h3 {
+            color: #fafafa;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-size: 30px;
+            text-align: center;
+        }
+
+        .playlist-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .playlist-container ul li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f44242;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            color: #181818;
+            transition: 0.3s;
+            cursor: pointer;
+            width: 60%;
+            height: 60px;
+            margin-left: 20%;
+            margin-right: 20%;
+            border: #181818 2px solid;
+        }
+
+        .playlist-container ul li:hover {
+            background: #181818;
+            color: #ff1a1a;
+            border: #ff1a1a 2px solid;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #fafafa;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .delete-btn:hover {
+            color: #ff1a1a;
+        }
+
+        .track-description {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Musicooom</a>
+        <div class="nav-icons">
+            <a href="index.html"><i class="fas fa-home"></i></a>
+            <a href="acc.html"><i class="fas fa-user"></i></a>
+            <a href="more.html"><i class="fa-solid fa-music"></i></a>
+            <a href="playlist.html"><i class="fa-solid fa-list"></i></a>
+            <input type="text" id="search-bar" placeholder="Search...">
+            <button class="btn"><i class="fas fa-search"></i></button>
+        </div>
+    </nav>
+
+    <div class="playlist-container">
+        <h3>Your Playlist</h3>
+        <ul id="playlist-list">
+            <!-- Playlist items will be dynamically populated here -->
+        </ul>
+        <div id="track-description" class="track-description"></div>
+    </div>
+
+    <audio id="audio-player"></audio>
+
+    <script>
+        const playlistList = document.getElementById('playlist-list');
+        const trackDescription = document.getElementById('track-description');
+        const audioPlayer = document.getElementById('audio-player');
+
+        // Sample songs data
+        const songs = [
+            { title: "Speak to Me", description: "This is the first track.", src: "Data/Songs/Speak to Me.mp3" },
+            { title: "Time", description: "A song about the passage of time.", src: "Data/Songs/Time.mp3" },
+            { title: "On the Run", description: "A track about urgency and motion.", src: "Data/Songs/On the Run.mp3" },
+            { title: "Brain Damage", description: "A song that dives into madness.", src: "Data/Songs/Brain Damage.mp3" }
+        ];
+
+        // Function to load the playlist from local storage
+        function loadPlaylist() {
+            let playlist = JSON.parse(localStorage.getItem('playlist')) || [];
+            playlist.forEach(trackTitle => {
+                const li = document.createElement('li');
+                li.textContent = trackTitle;
+
+                // Add click event to play song and redirect to home page
+                li.onclick = function () {
+                    const song = songs.find(s => s.title === trackTitle);
+                    if (song) {
+                        // Store song info in localStorage
+                        localStorage.setItem('currentSong', JSON.stringify(song));
+
+                        // Play the song in the audio player
+                        playSong(song);
+
+                        // Redirect to home page
+                        window.location.href = "index.html"; // You can comment this line if you don't want to redirect
+                    }
+                };
+
+                // Create a delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = '✖'; // Cross symbol for delete
+                deleteButton.className = 'delete-btn';
+                deleteButton.onclick = function (event) {
+                    event.stopPropagation(); // Prevent the li click event
+                    removeFromPlaylist(trackTitle); // Remove track from playlist
+                };
+
+                // Append the delete button to the list item
+                li.appendChild(deleteButton);
+                playlistList.appendChild(li);
+            });
+        }
+
+        // Function to remove a track from the playlist
+        function removeFromPlaylist(trackTitle) {
+            let playlist = JSON.parse(localStorage.getItem('playlist')) || [];
+            playlist = playlist.filter(track => track !== trackTitle); // Filter out the track to be removed
+            localStorage.setItem('playlist', JSON.stringify(playlist)); // Update local storage
+
+            // Clear the playlist list and reload
+            playlistList.innerHTML = ''; // Clear current playlist display
+            loadPlaylist(); // Reload the playlist
+        }
+
+        // Function to play the selected song
+        function playSong(song) {
+            audioPlayer.src = song.src; // Set audio source to the selected song
+            audioPlayer.play(); // Play the audio
+            trackDescription.textContent = song.description; // Show the track description
+        }
+
+        // Call the loadPlaylist function when the page loads
+        loadPlaylist();
+          // Function to play a track and redirect to home page
+    function playTrackAndRedirect(song) {
+        // Store the song details in local storage
+        localStorage.setItem('currentSong', JSON.stringify(song));
+        // Redirect to the home page
+        window.location.href = 'index.html';
+    }
+
+    // Update the song click event to use the new function
+    playlist.forEach(trackTitle => {
+        const li = document.createElement('li');
+        li.textContent = trackTitle;
+
+        // Add click event to play song and redirect
+        li.onclick = function () {
+            const song = songs.find(s => s.title === trackTitle);
+            if (song) {
+                playTrackAndRedirect(song);
+            }
+        };
+
+        // Create a delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '✖'; // Cross symbol for delete
+        deleteButton.className = 'delete-btn';
+        deleteButton.onclick = function (event) {
+            event.stopPropagation(); // Prevent the li click event
+            removeFromPlaylist(trackTitle); // Remove track from playlist
+        };
+
+        // Append the delete button to the list item
+        li.appendChild(deleteButton);
+        playlistList.appendChild(li);
+    });
+    </script>
+
+</body>
+
+</html>

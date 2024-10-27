@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musicooom</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="logo">Musicooom</a>
+        <div class="nav-icons">
+            <a href="index.html"><i class="fas fa-home"></i></a>
+            <a href="acc.html"><i class="fas fa-user"></i></a>
+            <a href="more.html"><i class="fa-solid fa-music"></i></a>
+            <a href="playlist.html"><i class="fa-solid fa-list"></i></a>
+            <input type="text" id="search-bar" placeholder="Search...">
+            <button id="search-button" class="btn"><i class="fas fa-search"></i></button>
+        </div>
+    </nav>
+
+    <div class="music-player-container">
+        <div class="left-side">
+            <div class="vinyl-container">
+                <img src="Data/images/vinyl-image.webp" class="vinyl-image" alt="Vinyl Record">
+                <div class="vinyl-center">
+                    <img src="Data/images/album-cover.webp" alt="Vinyl Center">
+                </div>
+            </div>
+
+            <div class="tracklist">
+                <ul>
+                    <li data-index="0">Speak to Me</li>
+                    <li data-index="1">Time</li>
+                    <li data-index="2">On the Run</li>
+                    <li data-index="3">Brain Damage</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="right-side">
+            <h2>Welcome</h2>
+            <div class="album-info">
+                <h3 id="current-track-title">Musicooom</h3>
+                <p id="track-description" class="album-description">We call ourselves musicooomans. We provide you with excellent recordings!</p>
+            </div>
+
+            <div class="player-controls" id="player-controls" style="display: none;">
+                <div class="progress-container">
+                    <span id="current-time">0:00</span>
+                    <input type="range" id="progress-bar" value="0" step="1" min="0" max="100">
+                    <span id="duration-time">3:30</span>
+                </div>
+                <div class="control-buttons">
+                    <button id="prev-btn"><i class="fas fa-backward"></i></button>
+                    <button id="play-btn"><i class="fas fa-play"></i></button>
+                    <button id="pause-btn" style="display:none;"><i class="fas fa-pause"></i></button>
+                    <button id="next-btn"><i class="fas fa-forward"></i></button>
+                    <button id="add-to-playlist-btn" style="display:none;">Add to Playlist</button>
+                </div>
+            </div>
+            <ul id="playlist-list"></ul>
+            <div id="popup-message" class="popup-message" style="display:none;"></div>
+
+        </div>
+    </div>
+
+    <audio id="audio-player"></audio>
+    <script src="script.js"></script>
+    
+    <script>
+        document.getElementById('search-button').addEventListener('click', function() {
+            const query = document.getElementById('search-bar').value.trim();
+            if (query) {
+                window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,284 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #181818;
+    color: #fff;
+}
+
+/* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    background-color: #202020;
+    border-bottom: 1px solid #f44242;
+}
+
+.logo {
+    font-size: 36px;
+    color: #fff;
+    margin: 0;
+    font-family: 'Londrina Sketch', cursive;
+    text-decoration: none;
+}
+
+nav .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Space between items */
+}
+
+nav .nav-icons i {
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+nav .nav-icons i:hover {
+    color: #f44242;
+}
+
+.btn {
+    background: transparent;
+    border: none;
+}
+
+/* Search Bar */
+#search-bar {
+    padding: 5px;
+    border: 1px solid #f44242;
+    border-radius: 5px;
+    background-color: #202020;
+    color: #fff;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    margin-left: 10px;
+    /* Space between the icon and search bar */
+}
+
+#search-bar::placeholder {
+    color: #aaa;
+    /* Placeholder color */
+}
+
+/* Music Player Container */
+.music-player-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Left Side */
+.left-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Vinyl Container */
+.vinyl-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin-bottom: 30px;
+}
+
+.vinyl-image {
+    width: 100%;
+    border-radius: 50%;
+    animation: spin 5s linear infinite;
+}
+
+.vinyl-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.vinyl-center img {
+    width: 100%;
+}
+
+/* Tracklist */
+.tracklist {
+    margin-top: 20px;
+    width: 70%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.tracklist ul {
+    list-style-type: circle;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.tracklist li {
+    display: flex;
+    justify-content: space-around;
+    padding: 13px 0;
+    font-size: 18px;
+    background: #f44242;
+    border: 2px solid #f44242;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    /* Cursor indicates clickable item */
+}
+
+.tracklist li:hover {
+    color: #f44242;
+    background: #202020;
+    border-color: #202020;
+}
+
+/* Right Side */
+.right-side {
+    flex: 1;
+    background-color: #f44242;
+    padding: 40px;
+    border-radius: 20px;
+}
+
+.right-side h2 {
+    font-size: 36px;
+    margin: 0 0 10px 0;
+    font-family: 'Roboto', sans-serif;
+    border-bottom: #181818 solid 2px;
+    width: 50%;
+}
+
+.right-side h3 {
+    font-size: 24px;
+    margin: 0 0 10px 0;
+    font-family: 'Londrina Sketch', cursive;
+}
+
+.album-description {
+    margin: 20px 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Player Controls */
+.player-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    /* Space between progress bar and buttons */
+    width: 100%;
+    /* Ensure full width */
+}
+#player-controls {
+    display: none; /* Initially hidden */
+}
+
+#player-controls.visible {
+    display: flex; /* Show when track is playing */
+}
+
+
+/* Progress Bar */
+.progress-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* Full width */
+    margin-bottom: 10px;
+    /* Add space below the progress bar */
+}
+
+#progress-bar {
+    flex: 1;
+    /* Grow to fill available space */
+    cursor: pointer;
+    background-color: #fff;
+    appearance: none;
+    height: 5px;
+    margin: 0 10px;
+    /* Space between time and progress bar */
+}
+
+#progress-bar::-webkit-slider-thumb {
+    appearance: none;
+    height: 15px;
+    width: 15px;
+    background-color: #202020;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#progress-bar::-moz-range-thumb {
+    height: 15px;
+    width: 15px;
+    background-color: #202020;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Control Buttons */
+.control-buttons {
+    display: flex;
+    justify-content: center;
+    /* Center buttons */
+    gap: 20px;
+    /* Space between buttons */
+}
+
+.control-buttons button {
+    background-color: #202020;
+    border: none;
+    color: white;
+    padding: 12px 15px;
+    border-radius: 50%;
+    /* Circular buttons */
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    /* Smooth hover effect */
+}
+
+.control-buttons button:hover {
+    background-color: #d32f2f;
+    /* Background color change on hover */
+}
+
+/* Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+.popup-message {
+    position: fixed;
+    right: 20px;
+    top: 50px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensure it appears on top */
+}
+@media (max-width:800px) {
+    body{
+        display: none;
+    }
+    
+}

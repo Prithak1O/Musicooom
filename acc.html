@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Change to match your index.html font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #181818; /* Dark background */
+            margin: 0;
+        }
+        .container {
+            background-color: #202020; /* Darker background for the container */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 90%; /* Default width for mobile devices */
+            max-width: 400px; /* Maximum width for larger screens */
+            display: none; /* Hidden by default, displayed as needed */
+        }
+        /* Increased size for the welcome message container */
+        #welcome-container {
+            width: 90%; /* Default width for mobile devices */
+            max-width: 400px; /* Maximum width for larger screens */
+            padding: 40px; /* Increased padding for more space */
+            display: none; /* Hidden by default */
+        }
+        h2 {
+            text-align: center;
+            color: #f44242; /* Highlight color for headings */
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #f44242; /* Light red border */
+            border-radius: 5px;
+            background-color: #303030; /* Input field background */
+            color: #fff; /* White text */
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f44242; /* Button color */
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+        }
+        button:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+        }
+        .toggle {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .toggle a {
+            text-decoration: none;
+            color: #f44242; /* Link color */
+        }
+        .toggle a:hover {
+            text-decoration: underline;
+        }
+        .toggle p {
+            color: #fff;
+        }
+        .message {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .welcome-message {
+            font-size: 24px; /* Large size for welcome message */
+            color: #fff; /* White color for the message */
+        }
+        .redirect-message {
+            font-size: 14px; /* Smaller size for redirect message */
+            color: #f44242; /* Slightly different color for emphasis */
+            margin-top: 10px; /* Space between messages */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px; /* Reduce padding for smaller screens */
+            }
+            .welcome-message {
+                font-size: 20px; /* Adjust size for smaller screens */
+            }
+            .redirect-message {
+                font-size: 12px; /* Adjust size for smaller screens */
+            }
+        }
+
+        @media (max-width: 400px) {
+            h2 {
+                font-size: 20px; /* Smaller heading on very small screens */
+            }
+            button {
+                font-size: 14px; /* Smaller button text */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login Form -->
+<div class="container" id="login-container" style="display: block;">
+    <h2 id="form-title">Login</h2>
+    <form id="auth-form">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <div class="toggle">
+        <p>Don't have an account? <a href="#" id="toggle-signup">Signup</a></p>
+    </div>
+</div>
+
+<!-- Signup Form -->
+<div class="container" id="signup-container">
+    <h2 id="signup-title">Signup</h2>
+    <form id="signup-form">
+        <input type="text" id="signup-username" placeholder="Username" required>
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <input type="password" id="signup-password" placeholder="Password" required>
+        <button type="submit">Signup</button>
+    </form>
+    <div class="toggle">
+        <p>Already have an account? <a href="#" id="toggle-login">Login</a></p>
+    </div>
+</div>
+
+<!-- Welcome Message -->
+<div class="container" id="welcome-container">
+    <h2 id="welcome-title">Welcome</h2>
+    <div class="message">
+        <div id="welcome-message" class="welcome-message"></div> <!-- Message area for feedback -->
+        <div id="redirect-message" class="redirect-message"></div> <!-- Smaller redirect message -->
+    </div>
+    <button id="logout-button">Logout</button>
+</div>
+
+<script>
+    const authForm = document.getElementById('auth-form');
+    const signupForm = document.getElementById('signup-form');
+    const welcomeContainer = document.getElementById('welcome-container');
+    const welcomeMessageDiv = document.getElementById('welcome-message');
+    const redirectMessageDiv = document.getElementById('redirect-message');
+
+    let isSignup = false;
+    let redirectTimeout; // Variable to hold the timeout ID
+
+    // Show signup form
+    document.getElementById('toggle-signup').addEventListener('click', (e) => {
+        e.preventDefault();
+        isSignup = true; 
+        document.getElementById('login-container').style.display = 'none'; 
+        document.getElementById('signup-container').style.display = 'block'; 
+    });
+
+    // Show login form
+    document.getElementById('toggle-login').addEventListener('click', (e) => {
+        e.preventDefault();
+        isSignup = false; 
+        document.getElementById('login-container').style.display = 'block'; 
+        document.getElementById('signup-container').style.display = 'none'; 
+    });
+
+    // Handle login
+    authForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Simulate successful login
+        if (username && password) {
+            showWelcomeMessage(username, 'Login successful! Redirecting to homepage...');
+        } else {
+            alert('Please enter valid credentials.');
+        }
+    });
+
+    // Handle signup
+    signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const signupUsername = document.getElementById('signup-username').value;
+        const email = document.getElementById('signup-email').value;
+        const signupPassword = document.getElementById('signup-password').value;
+
+        // Simulate successful signup
+        if (signupUsername && email && signupPassword) {
+            showWelcomeMessage(signupUsername, 'Signup successful! Redirecting to homepage...');
+        } else {
+            alert('Please fill all fields correctly.');
+        }
+    });
+
+    // Function to show welcome message
+    function showWelcomeMessage(username, redirectMsg) {
+        welcomeMessageDiv.textContent = `Namaste ${username}, you're logged in!`;
+        redirectMessageDiv.textContent = redirectMsg; // Smaller redirect message
+        document.getElementById('login-container').style.display = 'none'; 
+        document.getElementById('signup-container').style.display = 'none'; 
+        welcomeContainer.style.display = 'block'; 
+
+        // Redirect to index.html after 5 seconds
+        redirectTimeout = setTimeout(() => {
+            window.location.href = 'index.html'; // Redirect to the main page
+        }, 5000); // Redirect after 5 seconds
+    }
+
+    // Handle logout
+    document.getElementById('logout-button').addEventListener('click', () => {
+        clearTimeout(redirectTimeout); // Clear the redirect timeout
+        welcomeContainer.style.display = 'none'; 
+        document.getElementById('login-container').style.display = 'block'; 
+        document.getElementById('username').value = ''; // Clear username
+        document.getElementById('password').value = ''; // Clear password
+    });
+</script>
+
+</body>
+</html>
